@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+.DS_Store
+
+# manuscript drafts (not published)
+Feedback_Protocols_for_Dissipation_Control_in_Small_Systems___*.pdf
