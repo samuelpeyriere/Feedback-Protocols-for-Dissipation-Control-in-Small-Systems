@@ -9,7 +9,7 @@ authors:
   - family-names: "Ritort"
     given-names: "Felix"
     orcid: "https://orcid.org/0000-0002-4869-5003"
-version: "v1"
+version: "v3"
 date-released: "2026-09-28"
 license: MIT
 repository-code: "https://github.com/samuelpeyriere/Feedback-Protocols-for-Dissipation-Control-in-Small-Systems"
