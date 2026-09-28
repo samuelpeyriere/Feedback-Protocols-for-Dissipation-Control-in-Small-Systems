@@ -37,7 +37,7 @@ LEGEND_SPACE = 0.11       # fraction of figure height reserved for the legend at
 
 # Panel (b) layout:  (row, col), key in `quantities`, title, unit, minor_y, hide_x
 PANELS_B = [
-    ((0, 0), 'UPSILON', r'$k_B T \Upsilon$',        r'[$k_B T$]', 0.1,   True),
+    ((0, 0), 'UPSILON', r'$k_B T \Upsilon_2$',        r'[$k_B T$]', 0.1,   True),
     ((0, 1), 'WD',      r'$\langle W_d \rangle$',   r'[$k_B T$]', 0.01,  True),
     ((0, 2), 'WD0',     r'$\langle W_d \rangle_0$', r'[$k_B T$]', None,  True),
     ((1, 0), 'ETAI',    r'$\eta_I$',                '',           0.025, False),
@@ -227,10 +227,11 @@ def make_figure(sim, cp1_list, ratio_list, quantities, outfile=None):
     fig.tight_layout()
     fig.subplots_adjust(bottom=fig.subplotpars.bottom + LEGEND_SPACE)
 
-    # legend in one row, centered under panel (b)
+    # legend in one row, right-aligned with panel (b): it is wider than panel (b), and
+    # centered it would stick out past the right edge and widen the saved figure
     box_b = outer[1].get_position(fig)
-    fig.legend(handles, labels, loc='lower center', ncol=len(labels),
-               bbox_to_anchor=((box_b.x0 + box_b.x1) / 2, 0.005))
+    fig.legend(handles, labels, loc='lower right', ncol=len(labels),
+               bbox_to_anchor=(box_b.x1, 0.005))
 
     draw_state_rows(ax_traj, ax_state, sim)
 

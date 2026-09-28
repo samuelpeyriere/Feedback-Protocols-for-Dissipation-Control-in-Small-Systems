@@ -25,7 +25,7 @@ LEGEND_SPACE = 0.11       # fraction of figure height reserved for the legend at
 
 # Panel (b) layout:  (row, col), key in `quantities`, title, unit, hide_x, share_inf_y
 PANELS_B = [
-    ((0, 0), 'UPSILON', r'$k_B T \Upsilon$',        r'[$k_B T$]', True,  False),
+    ((0, 0), 'UPSILON', r'$k_B T \Upsilon_{\infty}$',        r'[$k_B T$]', True,  False),
     ((0, 1), 'WD',      r'$\langle W_d \rangle$',   r'[$k_B T$]', True,  True),
     ((0, 2), 'WD0',     r'$\langle W_d \rangle_0$', r'[$k_B T$]', True,  True),
     ((1, 0), 'ETAI',    r'$\eta_I$',                '',           False, True),

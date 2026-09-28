@@ -18,7 +18,7 @@ def make_figure(data, outfile=None):
     """Build the full figure from the arrays saved by the matching simulation script."""
     f1_list, f, force_list = data['f1_list'], data['f'], data['force_list']
     panels = [
-        dict(title=r'$k_B T \Upsilon$', unit=r'[$k_B T$]', curves={
+        dict(title=r'$k_B T \Upsilon_{\rm DS}$', unit=r'[$k_B T$]', curves={
             'simulation': (f1_list, data['Upsilon_JZ']),
             'formula': (f, data['Upsilon_formula']),
             'estimation': (force_list, data['Upsilon_estimation'])}),

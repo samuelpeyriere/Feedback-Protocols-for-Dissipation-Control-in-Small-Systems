@@ -22,6 +22,7 @@ each figure can be redrawn without running its simulation again.
 | Supp. Fig. 4 (constant-DS approximations) | `Supp-Fig4-CDS-approx-simulation.py` | `Supp-Fig4-CDS-approx-data.npz` | `Supp-Fig4-CDS-approx-plot.py` | `Supp-Fig4-CDS-approx.pdf` |
 | Supp. Fig. 5 (simulation step) | – | – | `Supp-Fig5-simulation-structure-plot.py` | `Supp-Fig5-simulation-structure.pdf` |
 | Supp. Fig. 6 (no feedback) | `Supp-Fig6-none-simulation.py` | `Supp-Fig6-none-data.npz` | `Supp-Fig6-none-plot.py` | `Supp-Fig6-none.pdf` |
+| Supp. Fig. 7 (dependence on r_F) | `Supp-Fig7-rF-simulation.py` | `Supp-Fig7-rF-data.npz` | `Supp-Fig7-rF-plot.py` | `Supp-Fig7-rF.pdf` |
 
 File names use `DMD`, `DTF`, `CTF` and `CDS`; `CDS` is the constant Dual-Strategy (constant-DS)
 of the paper. `LdF` in the code is the force ensemble.
@@ -60,7 +61,7 @@ python Fig5-DTF-simulation.py   # writes Fig5-DTF-data.npz
 python Fig5-DTF-plot.py         # writes Fig5-DTF.pdf
 ```
 
-- The simulations of Figs. 5–7 and Supp. Figs. 2–4 need `Supp-Fig6-none-data.npz`. If it
+- The simulations of Figs. 5–7 and Supp. Figs. 2–4 and 7 need `Supp-Fig6-none-data.npz`. If it
   is missing, `none_Wd0.py` runs `Supp-Fig6-none-simulation.py` first to create it.
 - Panel (a) of Fig. 9 also loads the data of Figs. 5–7. `Fig9-optimal-simulation.py` accepts protocol keys
   (`none`, `DTF`, `CTF`, `CDS`) to re-simulate only those, e.g. `python Fig9-optimal-simulation.py DTF`;

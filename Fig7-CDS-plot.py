@@ -38,7 +38,7 @@ LEGEND_SPACE = 0.11       # fraction of figure height reserved for the legend at
 def panels_b(rU_finite):
     """Panel (b) layout:  (row, col), key in `quantities`, title, unit, hide_x, ylim"""
     return [
-        ((0, 0), 'UPSILON', r'$k_B T \Upsilon$',        r'[$k_B T$]', True,
+        ((0, 0), 'UPSILON', r'$k_B T \Upsilon_{\rm DS}$',        r'[$k_B T$]', True,
          (-0.1, 2.8) if rU_finite else (-0.5, 15)),
         ((0, 1), 'WD',      r'$\langle W_d \rangle$',   r'[$k_B T$]', True,
          (-0.1, 2.8) if rU_finite else (-1, 2.8)),
