@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite it using the metadata below."
+title: "Feedback Protocols for Dissipation Control in Small Systems: simulation and plotting code"
+type: software
+authors:
+  - family-names: "Peyrière"
+    given-names: "Samuel"
+    orcid: "https://orcid.org/0009-0008-4795-6188"
+  - family-names: "Ritort"
+    given-names: "Felix"
+    orcid: "https://orcid.org/0000-0002-4869-5003"
+version: "v1"
+date-released: "2026-09-28"
+license: MIT
+repository-code: "https://github.com/samuelpeyriere/Feedback-Protocols-for-Dissipation-Control-in-Small-Systems"
+keywords:
+  - stochastic thermodynamics
+  - feedback control
+  - dissipation
