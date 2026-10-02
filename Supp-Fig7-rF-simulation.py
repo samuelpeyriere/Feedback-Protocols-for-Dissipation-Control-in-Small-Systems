@@ -36,6 +36,9 @@ N_CDS = 3000                       # trajectories per r_F for the constant-DS pr
 N_JOBS = 12                        # a job holds up to ~1 GB of trajectories
 ensemble = 'LdF'
 protocols = np.array(['DTF', 'CTF', 'CDS'])
+SEED = 0                           # random seed
+
+hp.seed(SEED)
 
 
 def new_simulation(rF, N=1):
@@ -83,8 +86,8 @@ def _computation(rF):
 
 
 # one progress step per loading rate
-results = list(tqdm(Parallel(n_jobs=N_JOBS, return_as="generator")(
-    delayed(computation)(rF) for rF in rF_list), total=len(rF_list), unit="rate", desc="r_F"))
+results = list(tqdm(Parallel(n_jobs=N_JOBS, return_as="generator")(hp.seeded(
+    delayed(computation)(rF) for rF in rF_list)), total=len(rF_list), unit="rate", desc="r_F"))
 # arrays of shape (len(protocols), len(rF_list))
 UPSILON, WD, T = np.array(results, dtype=float).transpose(2, 1, 0)
 

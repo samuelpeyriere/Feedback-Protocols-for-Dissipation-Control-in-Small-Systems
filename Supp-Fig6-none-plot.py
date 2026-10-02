@@ -24,7 +24,7 @@ def make_figure(T0, Wd0, r, Wd0_est, delta_f, outfile=None):
 
     # primary axis
     ax1.loglog(T0, Wd0, label='simulation', **ws.curve_style(0, marker=False))
-    ax1.loglog(delta_f / r, Wd0_est, label='mean-field\napproximation',
+    ax1.loglog(delta_f / r, Wd0_est, label='two-state\nmodel',
                **ws.curve_style(1, marker=False))
 
     ax1.set_xlabel(r'$\langle \tau \rangle$ [s]')

@@ -27,6 +27,9 @@ OUTFILE = os.path.join(HERE, "Supp-Fig6-none-data.npz")
 ensemble = 'LdF'
 simulation = hp.Simulation(N=10000, ensemble=ensemble)
 r = np.logspace(-2, 2, 200)   # loading rates [pN/s]
+SEED = 0                      # random seed
+
+hp.seed(SEED)
 
 
 def computation(r):
@@ -42,7 +45,7 @@ def computation(r):
 
 
 # one progress step per loading rate simulated
-results = list(tqdm(Parallel(n_jobs=-1, return_as="generator")(delayed(computation)(r_) for r_ in r),
+results = list(tqdm(Parallel(n_jobs=-1, return_as="generator")(hp.seeded(delayed(computation)(r_) for r_ in r)),
                     total=len(r), unit="rate", desc="r"))
 Wd0, T0, Wd0_est = map(np.array, zip(*results))
 

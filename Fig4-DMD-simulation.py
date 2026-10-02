@@ -28,6 +28,9 @@ Deltat = 1e-2   # s
 Deltaf = 1      # pN
 rQS = 0.01      # pN/s, quasi-static return rate
 f0_list = np.linspace(13, 16.25, 50)
+SEED = 0        # random seed
+
+hp.seed(SEED)
 
 
 def computation(f0):
@@ -54,7 +57,7 @@ def computation(f0):
     return Upsilon, Wd, pU_f0, pU_f0mDf, pU_f0pDf
 
 
-results = Parallel(n_jobs=-1, return_as='generator')(delayed(computation)(f0) for f0 in f0_list)
+results = Parallel(n_jobs=-1, return_as='generator')(hp.seeded(delayed(computation)(f0) for f0 in f0_list))
 Upsilon, Wd, pU_f0, pU_f0mDf, pU_f0pDf = map(
     np.array, zip(*tqdm(results, total=len(f0_list), unit="f0")))
 

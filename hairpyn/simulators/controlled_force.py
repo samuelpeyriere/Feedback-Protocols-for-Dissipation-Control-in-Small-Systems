@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy.random import random
+from hairpyn.rng import random
 from hairpyn.dna_model import ControlledForceModel
 from hairpyn.protocol.none import NOProtocol
 from joblib import Parallel, delayed

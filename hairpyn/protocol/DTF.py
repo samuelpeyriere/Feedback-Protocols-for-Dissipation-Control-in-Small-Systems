@@ -5,6 +5,7 @@ from hairpyn.protocol.none import NOProtocol
 from .builder import Protocol
 
 from joblib import Parallel, delayed
+from hairpyn.rng import seeded
 
 class DTFProtocol(Protocol):
     def __init__(self,
@@ -169,7 +170,7 @@ class DTFProtocol(Protocol):
 
             return _Wd_rF, _Wd_rU
         
-        Wd_rF, Wd_rU = map(np.array, zip(*Parallel(n_jobs=-1)(delayed(computation)(cp1) for cp1 in cp1_list)))
+        Wd_rF, Wd_rU = map(np.array, zip(*Parallel(n_jobs=-1)(seeded(delayed(computation)(cp1) for cp1 in cp1_list))))
 
         return pU_cp * (Wd_rF - Wd_rU - (Wd_rF - Wd_rU)[-1])
 

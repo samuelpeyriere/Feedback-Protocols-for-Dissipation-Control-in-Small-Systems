@@ -42,6 +42,7 @@ RF, RU = 4, 17       # pN/s
 CP1_EXAMPLE = 14.5   # decision force of the histograms in panel (a)
 cp1_list = np.linspace(13.5, 15.5, 100)
 EQUATIONS = ('J', 'B', 'C')   # Jarzynski, Bennett, Crooks
+SEED = 0             # random seed
 
 
 def observation_index(sim):
@@ -62,7 +63,7 @@ def keep_columns(sim, cols):
 def run_cft(cp1, seed=None):
     """Forward run, then balanced backward run. Returns the dissipated works split by branch."""
     rng = np.random.default_rng(seed)
-    np.random.seed(rng.integers(2**32))   # hairpyn draws from the global numpy RNG
+    hp.seed(rng.integers(2**32))   # hairpyn's own random stream
 
     sim = hp.Simulation(N=N, ensemble=ENSEMBLE)
     sim.protocol = hp.DTFProtocol(rF=RF, rU=RU, cp1=cp1)
@@ -122,7 +123,8 @@ def computation(cp1, seed):
 
 
 if __name__ == "__main__":
-    seeds = np.random.SeedSequence().spawn(len(cp1_list) + 1)
+    hp.seed(SEED)
+    seeds = np.random.SeedSequence(SEED).spawn(len(cp1_list) + 1)
     seeds = [int(s.generate_state(1)[0]) for s in seeds]
 
     results = Parallel(n_jobs=N_JOBS, return_as='generator')(

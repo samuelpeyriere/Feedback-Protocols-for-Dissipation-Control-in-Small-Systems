@@ -30,6 +30,8 @@ M = 1000            # number of independent sets of pulls averaged over
 BATCH = 1000        # pulls simulated at once; the trajectories of a run take ~90 MB per
                     # 1000 pulls, so a set of N pulls is run in N/BATCH batches
 ensemble = 'LdF'
+SEED = 0            # random seed (combined with the protocol, so that each protocol
+                    # gives the same data whether or not the others are re-simulated)
 
 
 def no_feedback(sim):
@@ -95,13 +97,14 @@ with tqdm(total=M * len(run_keys), unit="set") as pbar:
     for key in run_keys:
         setup, N = PROTOCOLS[key]
         pbar.set_description(key)
+        hp.seed((SEED, list(PROTOCOLS).index(key)))
         simulation = hp.Simulation(N=BATCH, ensemble=ensemble)
         Upsilon, tau = setup(simulation)
 
         # one progress step per set of N pulls
         B = np.zeros(N)
-        for B_one in Parallel(n_jobs=-1, return_as="generator")(
-                delayed(bias_curve)(simulation, N, Upsilon) for _ in range(M)):
+        for B_one in Parallel(n_jobs=-1, return_as="generator")(hp.seeded(
+                delayed(bias_curve)(simulation, N, Upsilon) for _ in range(M))):
             B += B_one / M
             pbar.update()
 

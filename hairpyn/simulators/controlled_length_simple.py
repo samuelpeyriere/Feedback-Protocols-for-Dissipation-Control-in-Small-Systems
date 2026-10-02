@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy.random import random, normal
+from hairpyn.rng import random, normal
 from hairpyn.dna_model import ControlledLengthModel
 from hairpyn.protocol.none import NOProtocol
 from scipy.optimize import curve_fit

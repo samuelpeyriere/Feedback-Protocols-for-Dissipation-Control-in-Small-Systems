@@ -31,6 +31,9 @@ OUTFILE = os.path.join(HERE, "Fig6-CTF-data.npz")
 
 rF_list = np.array([1, 4, 10])                                  # pN/s
 ratio_list = np.concatenate([np.logspace(0, 1, 10), [np.inf]])   # r_U/r_F
+SEED = 0                                                         # random seed
+
+hp.seed(SEED)
 
 UPSILON = np.zeros((len(rF_list), len(ratio_list)))
 T = np.zeros((len(rF_list), len(ratio_list)))

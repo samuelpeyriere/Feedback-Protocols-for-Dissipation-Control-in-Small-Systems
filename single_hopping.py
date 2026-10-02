@@ -38,5 +38,5 @@ def single_hopping_Wd(model, force_list, r):
                        force_list[i], force_list[i + 1])[0] * inside[i]
         coarse[i] = (model.kUtoF(force_list[i:]) / r * PsU[i, i:] * inside[i:])[1:].sum() * Deltaf
 
-    Wd = model.beta * (1 - PsU[:, -1]) * (coarse + fine) * model.xm
+    Wd = model.beta * (coarse + fine) * model.xm
     return PsF, PsU, Wd

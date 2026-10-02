@@ -4,7 +4,7 @@
     the optimal protocols used in (b) and (c) are circled. Points are colored by <tau>.
 (b) Bias B_N of the free-energy estimator vs the cumulative measurement time N<tau>,
     for no feedback, the optimal DTF and constant-DS protocols and a CTF protocol of similar <tau>.
-(c) Same, weighted by N<tau> / ln(N<tau>).
+(c) Same, weighted by N / ln(N).
 
 Run `Fig9-optimal-simulation.py` first: it writes `Fig9-optimal-data.npz`, which this
 script loads. Panel (a) also loads the data of Figs. 5-7.
@@ -167,12 +167,15 @@ def draw_panel_a(fig, spec, datasets):
 
 # --------------------------------------------------------------------------- panels (b, c)
 def draw_bias_panel(fig, spec, data, weight, ylabel, sharex=None, label_N=False):
-    """weight(T) * B_N vs N<tau> for all protocols, with markers at MARKED_N."""
+    """weight(N) * B_N vs N<tau> for all protocols, with markers at MARKED_N."""
     ax = fig.add_subplot(spec, sharex=sharex)
     idx = np.array(MARKED_N) - 1
     for key, *_ in PROTOCOLS:
         T, B = data[f'T_{key}'], data[f'B_{key}']
-        y = weight(T) * B
+        N = np.arange(1, len(T) + 1)
+        with np.errstate(divide='ignore', invalid='ignore'):
+            y = weight(N) * B
+        y = np.where(np.isfinite(y), y, np.nan)   # N / ln(N) diverges at N = 1
         ax.plot(T, y, color=STYLE[key]['color'])
         ax.plot(T[idx], y[idx], ls='none', **STYLE[key])
         if label_N and key == LABELED_N_CURVE:
@@ -240,10 +243,10 @@ def make_figure(data, datasets, outfile=None):
     right = gridspec.GridSpecFromSubplotSpec(2, 1, subplot_spec=outer[0, 1], hspace=0.08)
 
     ax_a, sc, handles_a, labels_a = draw_panel_a(fig, outer[0, 0], datasets)
-    ax_b = draw_bias_panel(fig, right[0], data, lambda T: 1, r'$B_N$ [$k_B T$]',
+    ax_b = draw_bias_panel(fig, right[0], data, lambda N: 1, r'$B_N$ [$k_B T$]',
                            label_N=True)
-    ax_c = draw_bias_panel(fig, right[1], data, lambda T: T / np.log(T),
-                           r'$B_N \, N \langle \tau \rangle / \ln(N \langle \tau \rangle)$',
+    ax_c = draw_bias_panel(fig, right[1], data, lambda N: N / np.log(N),
+                           r'$B_N \, N / \ln N$ [$k_B T$]',
                            sharex=ax_b)
     ax_b.tick_params(labelbottom=False)
     ax_c.set_xlabel(r'Cumulative measurement time $N \langle \tau \rangle$ [s]')

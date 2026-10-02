@@ -5,6 +5,7 @@ from hairpyn.protocol.none import NOProtocol
 from hairpyn.protocol.DTF import DTFProtocol
 from .builder import Protocol
 from joblib import Parallel, delayed
+from hairpyn.rng import seeded
 from copy import copy
 
 class CTFProtocol(Protocol):
@@ -111,7 +112,7 @@ class CTFProtocol(Protocol):
             return np.log(df*np.sum(simulation.model.kUtoF(f)/self.rF*1/simulation.model.PsF(f, f[0], self.rF)*pU_rU_force)) #nansum gives wrong results
         
         Upsilon = np.zeros_like(ratio_list, dtype=float)
-        Upsilon[~mask_infty] = np.array(Parallel(n_jobs=-1)(delayed(computation)(ratio) for ratio in ratio_list[~mask_infty]))
+        Upsilon[~mask_infty] = np.array(Parallel(n_jobs=-1)(seeded(delayed(computation)(ratio) for ratio in ratio_list[~mask_infty])))
         Upsilon[mask_infty] = np.log(df*np.sum(simulation.model.kUtoF(f)/self.rF*1/simulation.model.PsF(f, f[0], self.rF)))
 
         simulation = None
@@ -249,7 +250,7 @@ class CTFProtocol(Protocol):
             return np.sum(simulation.model.kFtoU(f)/self.rF * simulation.model.PsF(f[0], f, self.rF)*(Wd_list_rF - Wd_list_rU))*df
 
         DeltaWd = np.zeros_like(ratio_list, dtype=float)
-        DeltaWd[~mask_infty] = np.array(Parallel(n_jobs=-1)(delayed(computation)(ratio) for ratio in ratio_list[~mask_infty]))
+        DeltaWd[~mask_infty] = np.array(Parallel(n_jobs=-1)(seeded(delayed(computation)(ratio) for ratio in ratio_list[~mask_infty])))
         DeltaWd[mask_infty] = np.sum(simulation.model.kFtoU(f)/self.rF * simulation.model.PsF(f[0], f, self.rF)*Wd_list_rF)*df
 
         simulation = None

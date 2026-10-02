@@ -29,6 +29,9 @@ OUTFILE = os.path.join(HERE, "Supp-Fig2-DTF-approx-data.npz")
 rF = 4      # pN/s
 rU = 17     # pN/s
 cp1_list = np.linspace(8, 22, 100)   # decision forces f_1 [pN]
+SEED = 0                             # random seed
+
+hp.seed(SEED)
 
 # --------------------------------------------------------------------------- simulation
 simulation = hp.Simulation(N=10000, ensemble='LdF')
@@ -50,7 +53,7 @@ def computation(f1):
     return Upsilon, Wd_forward.mean(), T
 
 
-Upsilon_JZ, Wd, T = map(np.array, zip(*Parallel(n_jobs=-1)(delayed(computation)(f1) for f1 in cp1_list)))
+Upsilon_JZ, Wd, T = map(np.array, zip(*Parallel(n_jobs=-1)(hp.seeded(delayed(computation)(f1) for f1 in cp1_list))))
 
 # --------------------------------------------------------------------------- single hopping estimation
 model = simulation.model

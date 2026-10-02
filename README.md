@@ -61,6 +61,18 @@ python Fig5-DTF-simulation.py   # writes Fig5-DTF-data.npz
 python Fig5-DTF-plot.py         # writes Fig5-DTF.pdf
 ```
 
+To run all simulations and then redraw all figures, showing the progress (`[i/N]` script
+counter, elapsed time, and the progress bars of the scripts):
+
+```sh
+python run_all.py           # simulations, then plots
+python run_all.py sims      # simulations only
+python run_all.py plots     # plots only, from the existing .npz files
+```
+
+It runs `Supp-Fig6-none-simulation.py` first, then the other simulations, then the plot
+scripts, with the same Python interpreter, and stops at the first script that fails.
+
 - The simulations of Figs. 5–7 and Supp. Figs. 2–4 and 7 need `Supp-Fig6-none-data.npz`. If it
   is missing, `none_Wd0.py` runs `Supp-Fig6-none-simulation.py` first to create it.
 - Panel (a) of Fig. 9 also loads the data of Figs. 5–7. `Fig9-optimal-simulation.py` accepts protocol keys
@@ -68,5 +80,7 @@ python Fig5-DTF-plot.py         # writes Fig5-DTF.pdf
   the others keep their values from `Fig9-optimal-data.npz`.
 - The simulations use all CPU cores through joblib. `Fig8-CFT-simulation.py` holds about 2 GB
   per job. Lower `N_JOBS` there if memory is short.
-- The random seeds are not fixed, so a new run reproduces the data only up to statistical
-  noise.
+- Each simulation script fixes its random seed (`SEED` at the top of the script), so a run gives
+  the same data every time, whatever the number of CPU cores. Each joblib job gets its own seed,
+  drawn from `SEED` (`hp.seeded` in `hairpyn/rng.py`). The `.npz` files used for the paper were
+  produced before the seeds were fixed, so a new run reproduces them only up to statistical noise.

@@ -33,6 +33,9 @@ rFprime = 1     # pN/s, loading rate after F was observed at f_1
 rU = np.inf     # pN/s, rate once U is observed
 
 f1_list = np.linspace(8.01, 22, 100)   # starts just above f_min = 8 pN
+SEED = 0        # random seed
+
+hp.seed(SEED)
 
 # --------------------------------------------------------------------------- simulation
 simulation = hp.Simulation(N=1000, ensemble='LdF')
@@ -54,7 +57,7 @@ def computation(f1):
     return Upsilon, Wd_forward.mean(), T
 
 
-Upsilon_JZ, Wd, T = map(np.array, zip(*Parallel(n_jobs=-1)(delayed(computation)(f1) for f1 in f1_list)))
+Upsilon_JZ, Wd, T = map(np.array, zip(*Parallel(n_jobs=-1)(hp.seeded(delayed(computation)(f1) for f1 in f1_list))))
 
 # --------------------------------------------------------------------------- formula + partial simulation
 model = simulation.model

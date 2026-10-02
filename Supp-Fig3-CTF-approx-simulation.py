@@ -27,6 +27,9 @@ OUTFILE = os.path.join(HERE, "Supp-Fig3-CTF-approx-data.npz")
 
 rF = 2                               # pN/s
 ratio_list = np.logspace(0, 1, 50)   # r_U/r_F
+SEED = 0                             # random seed
+
+hp.seed(SEED)
 
 # --------------------------------------------------------------------------- simulation
 simulation = hp.Simulation(N=5000, ensemble='LdF')
@@ -46,7 +49,7 @@ def computation(ratio):
     return Upsilon, Wd_forward.mean(), T
 
 
-Upsilon_JZ, Wd, T = map(np.array, zip(*Parallel(n_jobs=-1)(delayed(computation)(ratio) for ratio in ratio_list)))
+Upsilon_JZ, Wd, T = map(np.array, zip(*Parallel(n_jobs=-1)(hp.seeded(delayed(computation)(ratio) for ratio in ratio_list))))
 
 # --------------------------------------------------------------------------- single hopping estimation
 model = simulation.model

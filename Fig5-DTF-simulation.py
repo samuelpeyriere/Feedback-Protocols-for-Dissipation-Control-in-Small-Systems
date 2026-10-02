@@ -26,6 +26,9 @@ OUTFILE = os.path.join(HERE, "Fig5-DTF-data.npz")
 rF = 4                                   # pN/s
 ratio_list = np.array([1, 4, 40, np.inf])   # r_U/r_F
 ensemble = 'LdF'
+SEED = 0                                 # random seed
+
+hp.seed(SEED)
 
 simulation = hp.Simulation(ensemble=ensemble)
 cp1_list = np.linspace(simulation.fmin, simulation.fmax, 200)   # decision forces f_1 [pN]

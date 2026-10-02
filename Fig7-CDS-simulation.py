@@ -31,6 +31,9 @@ ratio_list = np.array([1/4, 1/2, 1])   # values of r_F'/r_F
 f1_list = np.linspace(8, 22, 200)      # decision forces f_1 [pN]
 N = 3000                               # trajectories per f_1
 ensemble = 'LdF'
+SEED = 0                               # random seed
+
+hp.seed(SEED)
 
 simulation = hp.Simulation(ensemble=ensemble)
 Wd0 = Wd0_T((simulation.fmax - simulation.fmin)/rF)   # no-feedback <W_d>_0 at r_F
@@ -60,7 +63,7 @@ with tqdm(total=len(ratio_list) * (1 + len(f1_list)), unit="step") as pbar:
         # one progress step per f_1 value simulated
         pbar.set_description(f"{tag} runs")
         results = []
-        for res in Parallel(n_jobs=-1, return_as="generator")(delayed(func)(f1) for f1 in f1_list):
+        for res in Parallel(n_jobs=-1, return_as="generator")(hp.seeded(delayed(func)(f1) for f1 in f1_list)):
             results.append(res)
             pbar.update()
         WD[k], T[k] = map(np.array, zip(*results))
