@@ -98,6 +98,28 @@ class ControlledForceSimulation():
 
         return None
 
+    def _transitions(self, force:np.ndarray, state:np.ndarray, active:np.ndarray, u:np.ndarray)->np.ndarray:
+        """
+        Returns the mask of trajectories that change state during one time step Deltat.
+
+        Uses the exact two-state propagator at fixed force over the step:
+            P(F->U) = kF/kT * (1 - exp(-kT*Deltat)),
+            P(U->F) = kU/kT * (1 - exp(-kT*Deltat)),   kT = kF + kU,
+        which is exact for any Deltat at fixed force, never exceeds 1, and preserves
+        detailed balance (P(F->U)/P(U->F) = kF/kU).
+
+        Parameters:
+        - force (np.ndarray): force at the previous step (NaN for finished trajectories, which then never jump).
+        - state (np.ndarray): state at the previous step (False <-> Folded).
+        - active (np.ndarray): trajectories allowed to jump during this step.
+        - u (np.ndarray): uniform random numbers in [0, 1), one per trajectory.
+        """
+        kF = self.model.kFtoU(force)
+        kU = self.model.kUtoF(force)
+        kT = kF + kU
+        p = -np.expm1(-kT * self.Deltat) / kT * np.where(state, kU, kF)
+        return active & (u < p)
+
     def run(self, pre_thermalise:bool=True)->None:
         """
         Runs the simulation of the model.
@@ -129,12 +151,8 @@ class ControlledForceSimulation():
             
             random_list = random(self.N)
             
-            FtoUtransition_mask = np.zeros(self.N, dtype=bool)
-            UtoFtransition_mask = np.zeros(self.N, dtype=bool)
-
-            FtoUtransition_mask[(~self.state_list[step-1])&unchanged_mask] = (self.model.kFtoU(self.force_list[step-1][(~self.state_list[step-1])&unchanged_mask]) * self.Deltat > random_list[(~self.state_list[step-1])&unchanged_mask])
-            UtoFtransition_mask[self.state_list[step-1]&unchanged_mask] = (self.model.kUtoF(self.force_list[step-1][self.state_list[step-1]&unchanged_mask]) * self.Deltat > random_list[self.state_list[step-1]&unchanged_mask])
-            transition_mask = FtoUtransition_mask + UtoFtransition_mask
+            transition_mask = self._transitions(self.force_list[step-1], self.state_list[step-1],
+                                                unchanged_mask, random_list)
 
             self.state_list[step][~transition_mask] = self.state_list[step-1][~transition_mask]
             self.state_list[step][transition_mask] = ~self.state_list[step-1][transition_mask]
@@ -180,13 +198,8 @@ class ControlledForceSimulation():
 
             random_list = random(self.N)
 
-            FtoUtransition_mask = np.zeros(self.N, dtype=bool)
-            UtoFtransition_mask = np.zeros(self.N, dtype=bool)
-        
-            FtoUtransition_mask[(~self.state_list_backward[step-1])&unchanged_mask] = (self.model.kFtoU(self.force_list_backward[step-1][(~self.state_list_backward[step-1])&unchanged_mask]) * self.Deltat > random_list[(~self.state_list_backward[step-1])&unchanged_mask])
-            UtoFtransition_mask[self.state_list_backward[step-1]&unchanged_mask] = (self.model.kUtoF(self.force_list_backward[step-1][self.state_list_backward[step-1]&unchanged_mask]) * self.Deltat > random_list[self.state_list_backward[step-1]&unchanged_mask])
-
-            transition_mask = FtoUtransition_mask + UtoFtransition_mask
+            transition_mask = self._transitions(self.force_list_backward[step-1], self.state_list_backward[step-1],
+                                                unchanged_mask, random_list)
 
             self.state_list_backward[step][~transition_mask] = self.state_list_backward[step-1][~transition_mask]
             self.state_list_backward[step][transition_mask] = ~self.state_list_backward[step-1][transition_mask]

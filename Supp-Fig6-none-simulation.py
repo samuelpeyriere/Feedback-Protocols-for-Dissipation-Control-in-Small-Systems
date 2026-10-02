@@ -1,11 +1,11 @@
 """Simulation data for Supp. Fig. 6 (no feedback, LdF ensemble).
 
 Dissipated work <W_d>_0 of the no-feedback protocol (constant loading rate r from f_min
-to f_max) for 200 loading rates, simulated and in the mean-field approximation (Eq. 25 of
+to f_max) for 200 loading rates, simulated and from the exact expression (Eq. 25 of
 the main text).
 
 Saves the results to `Supp-Fig6-none-data.npz`, which `Supp-Fig6-none-plot.py` loads.
-`none_Wd0.py` interpolates the mean-field values to give <W_d>_0 at any mean duration <tau>,
+`none_Wd0.py` interpolates the Eq. 25 values to give <W_d>_0 at any mean duration <tau>,
 which is the no-feedback reference of Figs. 5-7 and Supp. Figs. 2-4.
 """
 import os

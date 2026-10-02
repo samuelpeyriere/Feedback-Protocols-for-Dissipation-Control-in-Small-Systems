@@ -32,8 +32,8 @@ Shared modules:
 - `hairpyn/`: the simulation library (hairpin model, feedback protocols, force-ramp simulators).
 - `wiley_style.py`: matplotlib style (fonts, sizes, colorblind-safe palette).
 - `plot_helpers.py`: axis helpers (broken axis for `x = inf`, slope markers, the layout of Supp. Figs. 2–4).
-- `none_Wd0.py`: `Wd0_T(T)`, the dissipated work without feedback at mean duration `T`, in the mean-field
-  approximation (Eq. 25 of the main text). This is the reference that the feedback protocols are compared
+- `none_Wd0.py`: `Wd0_T(T)`, the dissipated work without feedback at mean duration `T`, from the exact
+  expression (Eq. 25 of the main text). This is the reference that the feedback protocols are compared
   to, interpolated from `Supp-Fig6-none-data.npz`.
 - `single_hopping.py`: the single-hopping estimate of the dissipated work used in Supp. Figs. 2–4.
 

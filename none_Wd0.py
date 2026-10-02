@@ -1,6 +1,6 @@
 """Dissipated work without feedback, <W_d>_0, as a function of the protocol duration <tau>.
 
-Linear interpolation, in log-log, of the mean-field estimate (Eq. 25 of the main text) stored in
+Linear interpolation, in log-log, of the exact expression (Eq. 25 of the main text) stored in
 `Supp-Fig6-none-data.npz` (LdF ensemble), with <tau> = (f_max - f_min) / r_0.
 If that file does not exist yet, `Supp-Fig6-none-simulation.py` is run first to create it.
 """

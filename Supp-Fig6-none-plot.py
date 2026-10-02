@@ -1,5 +1,5 @@
 """Supp. Fig. 6: dissipated work without feedback, <W_d>_0, vs the mean protocol duration.
-Simulation compared with the mean-field approximation (Eq. 25 of the main text); the top axis gives the
+Simulation compared with the exact expression (Eq. 25 of the main text); the top axis gives the
 corresponding loading rate r_0 = (f_max - f_min) / <tau>.
 
 Loads `Supp-Fig6-none-data.npz`, written by `Supp-Fig6-none-simulation.py` (run automatically if the file is missing).
